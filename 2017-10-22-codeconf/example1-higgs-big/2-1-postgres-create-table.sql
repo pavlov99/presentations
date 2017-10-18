@@ -1,0 +1,35 @@
+-- Create higgs table
+-- Get columns with the following script:
+-- cat header.txt | tr '-' '_' | tr ',' '\n' | xargs -n1 -I {} echo {}' numeric,'
+CREATE TABLE IF NOT EXISTS higgs (
+    id SERIAL,
+    signal numeric,
+    lepton_pT numeric,
+    lepton_eta numeric,
+    lepton_phi numeric,
+    missing_energy_magnitude numeric,
+    missing_energy_phi numeric,
+    jet_1_pt numeric,
+    jet_1_eta numeric,
+    jet_1_phi numeric,
+    jet_1_b_tag numeric,
+    jet_2_pt numeric,
+    jet_2_eta numeric,
+    jet_2_phi numeric,
+    jet_2_b_tag numeric,
+    jet_3_pt numeric,
+    jet_3_eta numeric,
+    jet_3_phi numeric,
+    jet_3_b_tag numeric,
+    jet_4_pt numeric,
+    jet_4_eta numeric,
+    jet_4_phi numeric,
+    jet_4_b_tag numeric,
+    m_jj numeric,
+    m_jjj numeric,
+    m_lv numeric,
+    m_jlv numeric,
+    m_bb numeric,
+    m_wbb numeric,
+    m_wwbb numeric
+)
