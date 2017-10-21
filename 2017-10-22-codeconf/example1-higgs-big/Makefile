@@ -1,6 +1,13 @@
 ENV=$(CURDIR)/.env
 DB_URL="postgresql://postgres:postgres@127.0.0.1:5432/postgres" 
 
+.PHONY: help
+# target: help - Display callable targets
+help:
+	@egrep "^# target:" [Mm]akefile
+
+.PHONY: env
+# target: env - Setup Python environment
 env:
 	[ -d $(ENV) ] || virtualenv --no-site-packages $(ENV)
 	$(ENV)/bin/pip install pandas==0.20.3
@@ -27,3 +34,9 @@ postgres_benchmark:
 
 postgres_output:
 	psql $(DB_URL) -c 'COPY (SELECT signal, m_jj, m_wbb FROM higgs WHERE m_jj > 0.75 ORDER BY m_wbb) TO STDOUT csv HEADER' > 2-postgres.csv
+
+awk:
+	bash 3-awk.sh
+
+tabtools:
+	bash 4-tabtools.sh

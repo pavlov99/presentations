@@ -4,25 +4,31 @@
 # cat <(printf "# ") <(cat header.txt) <(cat HIGGS.csv) | tr ',' '\t' > HIGGS.tsv
 
 function get_max_lepton_eta {
-    # time: 12.781s
+    # mawk time: 15.212s
+    # gawk time: 12.801s
     cat HIGGS.tsv \
         | tawk -o 'm=MAX(lepton_eta)' \
         | tail -n1  # or ttail -n1 -N
 }
 
 function get_avg_lepton_phi_by_signal {
-    # time: 30.657s
+    # mawk time: 30.657s
+    # gawk time: 26.621s
     cat HIGGS.tsv \
         | tawk -o 'signal=int(signal);lepton_phi' \
         | tsrt -k signal \
-        | tgrp -k signal -g 'avg=SUM(lepton_phi)/COUNT(lepton_phi)' \
+        | tgrp \
+            -k signal -g 'avg=SUM(lepton_phi)/COUNT(lepton_phi)' \
         | tail -n+2
 }
 
 function filter_sort_output {
-    # time: 33.516s
+    # mawk time: 33.516s
+    # gawk time: 43.408s
     cat HIGGS.tsv \
-        | tawk -o 'signal=int(signal);m_jj;m_wbb=0+m_wbb' -f 'm_jj>0.75' \
+        | AWKPATH=$(which mawk) tawk \
+            -o 'signal=int(signal);m_jj;m_wbb=0+m_wbb' \
+            -f 'm_jj>0.75' \
         | tsrt -k m_wbb:asc:numeric > 4-tabtools.csv
 }
 

@@ -1,13 +1,15 @@
 #!/bin/bash
 
 function get_max_lepton_eta {
-    # time: 12.560s
-    awk -F, '{v = $3 > v ? $3 : v}END{print v}' HIGGS.csv
+    # mawk time: 12.560s
+    # gawk time: 22.818s
+    mawk -F, '{v = $3 > v ? $3 : v}END{print v}' HIGGS.csv
 }
 
 function get_avg_lepton_phi_by_signal {
-    # time: 13.034s
-    awk -F, '{
+    # mawk time: 13.034s
+    # gawk time: 30.558s
+    mawk -F, '{
         count[$1]++; sum[$1] += $4
     } END {
         for (key in count) print int(key) ": " sum[key] / count[key]
@@ -19,8 +21,9 @@ function filter_sort_output {
     # awk -F, '{print $1, $23, $28}' header.txt
 
     # NOTE: need to convert numbers to floats, so sort works faster.
-    # time: 37.715s
-    awk -F, '{
+    # mawk time: 37.715s
+    # gawk time: 174.2s
+    mawk -F, '{
         if($23 > 0.75) printf "%.1f,%.12f,%.12f\n", $1, $23, $28
     }' HIGGS.csv | sort -t, -k3 -n > 3-awk.csv
 }
