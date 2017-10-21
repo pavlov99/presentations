@@ -22,3 +22,8 @@ metrics:
 # target: plot - plot metrics with Gnuplot
 plot:
 	cat metrics.tsv | ttail -n121 | tplot -c scripts/plot.gnu > metrics.png
+
+.PHONY: imgcat
+# target: imgcat - poorly simulate iTerm's imgcat with feh (apt-get install feh)
+imgcat:
+	feh metrics.png
