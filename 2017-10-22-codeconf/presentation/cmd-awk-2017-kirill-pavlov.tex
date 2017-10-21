@@ -1,0 +1,346 @@
+\documentclass[unicode, notheorems, aspectratio=169]{beamer}
+% Aspect ratio: https://tex.stackexchange.com/questions/14336/latex-beamer-presentation-package-169-aspect-ratio#answer-14339
+\usepackage{etex}  % Should be second line. Otherwise tikz raises error.
+\hypersetup{pdfpagemode=FullScreen}
+
+% If you have more than three sections or more than three subsections in at least one section,
+% you might want to use the [compress] switch. In this case, only the current (sub-) section
+% is displayed in the header and not the full overview.
+\mode<presentation>
+{
+  \usetheme{Madrid}
+  \usecolortheme{seahorse}
+}
+
+% https://tex.stackexchange.com/questions/106789/why-does-usepackaget2afontenc-take-over
+\usepackage[T2A,T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+\usepackage[all]{xy} % for graph plotting
+% \usepackage{times}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,backgrounds}
+\usepackage{textcomp} % euro sign
+\usepackage[official]{eurosym}
+\usepackage{ulem} % strike
+\usepackage{color} % use colors (in minted)
+
+% tables
+\usepackage{booktabs}
+\usepackage{multirow}
+
+%% Code highlight
+% Doc: http://ftp.yzu.edu.tw/CTAN/macros/latex/contrib/listings/listings.pdf
+\usepackage{listings}
+\usepackage{minted}
+\definecolor{LightGray}{rgb}{0.95,0.95,0.95}
+\setminted{bgcolor=LightGray}
+%\usemintedstyle{monokai}
+% ftp://ftp.dante.de/tex-archive/macros/latex/contrib/minted/minted.pdf
+% Note: to use minted, install pygments http://pygments.org/ and add "-shell-escape" flag to latex command.
+% Minted doc: http://ftp.yzu.edu.tw/CTAN/macros/latex/contrib/minted/minted.pdf
+%% END: Code highlight
+
+\usepackage{helvet}
+
+\title[Boosting command line: python + awk]{Boosting command line experience}
+\subtitle{Python meets AWK}
+\author[Kirill Pavlov <k@p99.io>]{Kirill Pavlov}
+\institute[]{Technical Recruiter, Terminal 1}
+\titlegraphic{\includegraphics[width=4cm]{./images/logo}}
+\date{October 22, 2017}
+
+\definecolor{t1_light}{RGB}{38,47,112}
+\definecolor{t1_dark}{RGB}{39,47,56}
+\definecolor{t1_blue}{RGB}{50,121,235}
+
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{enumerate items}[default]
+
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=t1_light}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=t1_dark}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=t1_blue}
+
+\setbeamercolor{itemize item}{fg=t1_blue}
+\setbeamercolor{itemize subitem}{fg=t1_blue}
+\setbeamercolor{enumerate item}{fg=t1_dark}
+\setbeamercolor{enumerate subitem}{fg=t1_dark}
+
+\setbeamertemplate{section in toc}{%
+  {\color{t1_dark}\inserttocsectionnumber.}~\inserttocsection}
+\setbeamercolor{subsection in toc}{bg=white,fg=structure}
+\setbeamertemplate{subsection in toc}{%
+  \hspace{1.2em}{\color{t1_dark}\rule[0.3ex]{3pt}{3pt}}~\inserttocsubsection\par}
+  
+% Set beamer blocks
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\addtobeamertemplate{block begin}{\pgfsetfillopacity{0.8}}{\pgfsetfillopacity{1}}
+
+\setbeamercolor*{block title example}{fg=white,bg= t1_light}
+\setbeamercolor*{block body example}{fg=white,bg= t1_dark}
+
+% remove page navigation.
+\beamertemplatenavigationsymbolsempty
+
+% Set link colours
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+\begin{document}
+% For every picture that defines or uses external nodes, you'll have to
+% apply the 'remember picture' style. To avoid some typing, we'll apply
+% the style to all pictures.
+\tikzstyle{every picture}+=[remember picture]
+
+% By default all math in TikZ nodes are set in inline mode. Change this to
+% displaystyle so that we don't get small fractions.
+\everymath{\displaystyle}
+
+% This presentation shows ability of spark to work with data.
+% It covers data processing, pipelining, feature engineering and algorithms available in Spark.
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{README.md}
+\begin{itemize}
+\item A lot of Python/AWK examples here.
+\item Source code and slides \href{https://github.com/pavlov99/presentations/tree/master/2017-10-22-codeconf}{available online}.
+\item At the end: build a stock trading system and check NYSE:CS.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Table of content}
+	% \tableofcontents[currentsection]
+    \tableofcontents
+\end{frame}
+
+\section{Problem Background}
+\begin{frame}{Table of content}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Background}
+\begin{itemize}
+\item \href{https://yandex.com}{Yandex}, year 2010. Hadoop was not widly adopted.
+\item 10Gb of archived ads data daily: \textit{time}, \textit{ad\_id}, \textit{site\_id}, \textit{clicks}.
+\item Task: daily data aggregation (simple functions: group by, sum, join) and feature generation for further machine learning classification.
+\item Solution: released a set of command line scripts.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+This presentation uses UCI machine learning \href{http://archive.ics.uci.edu/ml/datasets/HIGGS}{Higgs boson} data: 11M objects, 28 attributes, 7.5Gb unarchived. 
+\vfill
+\textbf{Questions:}
+\begin{enumerate}
+\item What is the maximum value of \textit{lepton\_eta}?
+\item What is the average value of \textit{lepton\_phi} by class 0 and 1?
+\item Filter objects with \textit{m\_jj} > 0.75 (8.9M objects) and sort them by \textit{m\_wbb}.
+\end{enumerate}
+\vfill
+\textbf{Solutions:}
+\begin{enumerate}
+\item In-memory Python with Pandas.
+\item Databse SQL queries (PostgreSQL and Docker).
+\item Command line with AWK.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[noframenumbering]
+	\begin{center}
+		{\huge Demo Time}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Reality Check}
+It's not as agile as it seems. You work inside the company network.
+\vfill
+\begin{enumerate}
+\item You \textbf{don't have sudo} rights and your admin does not want to install anything for you. Like no database or user privileges, etc.
+\item The \textbf{server does not have GitHub/Internet access} and the only deployment possible is Java JARs or C/C++/etc. So, no NodeJS/Python packages. And of course no R/Matlab/Excel.
+\item Get better at command line tools ;)
+\end{enumerate}
+\end{frame}
+
+\section{AWK Bootcamp in 5 min}
+\begin{frame}{Table of content}
+	\tableofcontents[currentsection]
+\end{frame}
+\begin{frame}{Basic concepts}
+\begin{enumerate}
+\item \href{https://en.wikipedia.org/wiki/AWK}{AWK}\footnotemark --- language for streaming columnar data processing. Standard in unix-like OS.
+\item Actual AWK is outdated, use mawk (fast) or gawk (flexible).
+\item Limited data structures: strings, \textbf{associative arrays (hash maps)} and regexps.
+\item Built-in variables:
+	\begin{itemize}
+	\item \$1, \$2, \dots (\$0 is entire record)
+	\item NR - number of processe lines (records)
+	\item NF - number of columns (fields)
+	\end{itemize}
+\item Use vars without declaration. Default values are 0s. One liners. \textbf{Hipster friendly}.
+\end{enumerate}
+\footnotetext[1]{
+\href{http://www.grymoire.com/Unix/Awk.html}{Tutorial} by Bruce Barnett. Careful, he \href{http://www.grymoire.com/Unix/CshTop10.txt}{writes his blog in txt}}
+\end{frame}
+
+\begin{frame}[fragile]{AWK Examples 1 \& 2}
+1. Count number of words and lines at \href{http://codeconf.hk}{codeconf.hk}:
+\begin{minted}{bash}
+cat codeconf.md | awk '{w += NF}END{print NR, w}'
+
+370 1445
+\end{minted}
+\vfill
+2. Most popular words on \href{http://codeconf.hk}{codeconf.hk} website:
+\begin{minted}{bash}
+cat codeconf.md \
+  | awk '{for(i=1; i<=NF; i++) words[tolower(\$i)]++}
+      END{for(w in words) print w, words[w]}' \
+  | sort -k2 -nr
+\end{minted}
+
+Most popular non stop-words: "Serverles" and "Android". \\
+SEO winners: Davide Benvegn\`u and Richard Cohen.
+\end{frame}
+
+{\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./images/seo-serverless}}
+\begin{frame}[plain,noframenumbering]
+\end{frame}
+}
+	
+\begin{frame}[plain,noframenumbering]
+\begin{center}
+	\includegraphics[height=.95\paperheight]{./images/seo-android}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{AWK Examples 3}
+3. Find the longest line in the text (if-then-else example):
+\begin{minted}{bash}
+cat codeconf.md | awk '{
+    l = length > length(l) ? \$0 : l
+  }END{
+    print length(l), l
+  }'
+
+146 * We believe that the Hong Kong developer community is skilled and
+diverse, but that often these skills end up hidden away in big organisations.
+\end{minted}
+\begin{center}
+{\huge Demo Time}
+\end{center}
+\end{frame}
+
+\section{Tabtools architecture and features}
+\begin{frame}{Table of content}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}[fragile]{Basic concepts}
+\begin{enumerate}
+\item Special files format: tsv + header (meta information). Easy to convert and autogenerate headers.
+\begin{minted}{bash}
+# Date      Open    High   Low   Close  Volume
+2014-02-21  84.35   84.45  83.9  83.45  17275.0
+\end{minted}
+\item Python script manages file descriptors headers, convert column names to column numbers and executes command line command, e.g. cat/tail/sort.
+\item Heavy lifting goes to awk: tawk (map) and tgrp (map-reduce).
+\item Based on command line expressions, it generates awk command and executes it with incoming stream.
+\item Visual sugar: tpretty and tplot.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Features}
+\begin{enumerate}
+\item Streaming expressions: parametrized running/total sum/average/maximum\footnotemark.
+\item Aggregators: first, last, min, max, count.
+\item Modules: \href{https://en.wikipedia.org/wiki/Double-ended_queue}{deque}.
+\item Build to self-contained ~2k LOC portable python (2.7, 3.3+) scripts.
+\item All together: zero-configuration extensible sql in command line. It is readable and faster than a generic python/cython code (even after shedskin) and perl. 
+\end{enumerate}
+
+\footnotetext[2]{moving maximum in \href{https://www.quora.com/How-can-I-solve-this-array-moving-window-max-problem-in-linear-time}{linear time} with \href{https://gist.github.com/pavlov99/c7b7bcd7913ffa72d651}{deque} implemented on top of awk associative arrays.}
+\end{frame}
+
+\begin{frame}{Solutions comparison}
+Dell xps 15, 16Gb RAM, 8 CPUs:
+\vfill
+\begin{tabular}{ |l|r|r|r|r|r| } 
+  \hline
+  & \textbf{Python} & \textbf{PostgreSQL} & \textbf{gawk} & \textbf{mawk} & \textbf{Tabtools} \\ \hline
+  Read time & 104.4 & 180.3 & 0 & 0 & 0 \\ \hline
+  Q1: "max" time & 0 & 15.2 & 22.8 & 12.2 & 12.8 \\ \hline
+  Q2: "group + avg" time & 0 & 5.8 & 30.5 & 12.6 & 26.6\footnotemark \\ \hline
+  Q3: "filter + sort" time & 21.3 & 33.6 & 174.2 & 36.3 & 33.5 \\ \hline
+  \textbf{Total, sec.} & 125.7 & 243.9 & 227.5 & \alert{61.1} & \alert{72.9} \\ \hline
+\end{tabular}
+\footnotetext[3]{Uses $\Omega(n \log(n))$ complexity instead of $\Omega(n)$. Could be improved.}
+\end{frame}
+
+\section{Stock example with NYSE:CS}
+\begin{frame}{Table of content}
+	\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}[fragile]{Data description}
+Credit Suisse (NYSE:CS) daily stock data from \href{https://finance.yahoo.com/quote/CS/history?period1=800553600&period2=1508515200&interval=1d&filter=history&frequency=1d}{Yahoo Finance}: 'CS.csv' + 'cs.tsv'.
+\vfill
+\begin{minted}{bash}
+cat cs.tsv | tgrp \
+    -k "Week=strftime(\"%U\", DateEpoch(Date))" \
+    -g "Date=FIRST(Date)" \
+    -g "Open=FIRST(Open)" \
+    -g "High=MAX(High)" \
+    -g "Low=MIN(Low)" \
+    -g "Close=LAST(Close)" \
+    -g "Volume=SUM(Volume)" \
+  | ttail \
+  | tsrt -k Date:desc \
+  | tpretty
+\end{minted}
+\end{frame}
+
+\begin{frame}[noframenumbering]
+	\begin{center}
+		{\huge Demo Time}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Demo: metrics}
+\begin{enumerate}
+\item Moving Average for windown size 200 and 50.
+\item Exponential moving average for window size 26 and 13.
+\item \href{https://en.wikipedia.org/wiki/MACD}{MACD(26, 12, 9)} histogram.
+\item \href{https://www.quora.com/How-can-I-solve-this-array-moving-window-max-problem-in-linear-time}{Moving maximum} and minimum for window size 14.
+\item \href{https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/fast-stochastic}{Fast} and \href{https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/slow-stochastic}{Slow} Stochastics.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Demo: plot (expected and actual)}
+\begin{center}
+	\includegraphics[width=.5\textwidth]{./images/credit-suisse-stockcharts}
+	\includegraphics[width=.5\textwidth]{./images/metrics}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+{\huge Thank you!}
+
+\vfill
+Kirill Pavlov <k@p99.io>, Recruiter, \href{https://t1.gl/k}{Terminal 1}.
+
+{\small
+GitHub: \href{https://github.com/pavlov99}{@pavlov99} |
+Presentation: \href{https://github.com/pavlov99/presentations/tree/master/2017-10-22-codeconf}{2017-10-22-codeconf} |
+\href{https://github.com/pavlov99/tabtools}{tabtools}
+}
+\end{center}
+\end{frame}
+
+\end{document}
