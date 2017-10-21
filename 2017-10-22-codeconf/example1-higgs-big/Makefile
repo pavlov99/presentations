@@ -12,6 +12,9 @@ env:
 	[ -d $(ENV) ] || virtualenv --no-site-packages $(ENV)
 	$(ENV)/bin/pip install pandas==0.20.3
 
+python:
+	$(ENV)/bin/python 1-example-python-pandas.py
+
 startdb:
 	docker run -p 5432:5432 postgres:9.6
 
