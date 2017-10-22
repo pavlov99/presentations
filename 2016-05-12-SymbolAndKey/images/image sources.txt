@@ -1,0 +1,3 @@
+* presenter: http://images.inc.com/uploaded_files/image/1940x900/Stevejobs_1000x470_21673.jpg
+* scientist: https://s-media-cache-ak0.pinimg.com/736x/3f/94/8e/3f948e39c41beac28135754330079533.jpg
+* Software engineer: http://i1-news.softpedia-static.com/images/news2/Richard-Stallman-Says-He-Created-GNU-Which-Is-Called-Often-Linux-482416-2.jpg
