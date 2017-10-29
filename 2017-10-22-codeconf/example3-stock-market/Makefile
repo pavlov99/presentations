@@ -11,7 +11,7 @@ tsv:
 .PHONY: weekly
 # target: weekly - Convert daily stock data to weekly
 weekly:
-	bash scripts/1-convert-daily-to-weekly.sh cs.tsv | ttail | tsrt -k Week:desc
+	bash scripts/1-convert-daily-to-weekly.sh cs.tsv | ttail | tsrt -k Week:desc | tpretty
 
 .PHONY: metrics
 # target: metrics - calculate metrics based on daily stock data
