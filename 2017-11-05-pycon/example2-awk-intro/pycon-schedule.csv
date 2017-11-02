@@ -1,0 +1,48 @@
+day,timeslot,venue,speaker,title
+1,09:30 - 10:00,Reception,,
+1,10:00 - 10:05,AC1 Lecture Hall LT-16,,Opening
+1,10:10 - 10:40,AC1 Lecture Hall LT-16,Denis Makogon,Applying serverless architecture pattern to distributed data processing
+1,10:50 - 11:10,Expo Area,,Refreshment
+1,11:10 - 11:40,AC1 Lecture Hall LT-16,Albert Au Yeung,Using Gradient Boosting Machines in Python
+1,11:10 - 11:40,AC1 Classroom P4701,,Video Streaming from LT-16
+1,11:10 - 11:40,AC1 Classroom P4704,,Development Sprint Part 1
+1,11:50 - 12:20,AC1 Lecture Hall LT-16,Aditthya Ramakrishnan,Resurrecting the dead with deep learning
+1,11:50 - 12:20,AC1 Classroom P4701,,Video Streaming from LT-16
+1,11:50 - 12:20,AC1 Classroom P4704,,Development Sprint Part 2
+1,12:20 - 13:50,Expo Area,,Lunch Networking
+1,13:50 - 14:20,AC1 Lecture Hall LT-16,Michal Szczecinski,Python for data analysis
+1,13:50 - 14:20,AC1 Classroom P4701,Kelvin Chu,Python Blockchain Application in < 24 hrs
+1,13:50 - 14:20,AC1 Classroom P4704,,Development Sprint Part 3
+1,14:30 - 15:00,AC1 Lecture Hall LT-16,Ho Wa Wong,How I battle with Hong Kong Open Data in Python
+1,14:30 - 15:00,AC1 Classroom P4701,Kirill Pavlov,How to reinvent the wheel and build the most popular JSON-RPC library
+1,14:30 - 15:00,AC1 Classroom P4704,,Development Sprint Part 4
+1,15:00 - 15:20,Expo Area,,Refreshment
+1,15:20 - 15:50,AC1 Lecture Hall LT-16,Claire Chung,Matplotlib 2 By Example Part 1
+1,15:20 - 15:50,AC1 Classroom P4701,Ivan Ma,A capability with Document Store using MySQL Shell - running Python
+1,15:20 - 15:50,AC1 Classroom P4704,,Development Sprint Part 5
+1,16:00 - 16:30,AC1 Lecture Hall LT-16,Claire Chung,Matplotlib 2 By Example Part 2
+1,16:00 - 16:30,AC1 Classroom P4701,,5-min Lightning Talks
+1,16:00 - 16:30,AC1 Classroom P4704,,Development Sprint Part 6
+2,10:30 - 11:00,Reception,,
+2,11:00 - 11:05,AC1 Lecture Hall LT-16,,Organiser Announcement
+2,11:10 - 11:40,AC1 Lecture Hall LT-16,Ayush Singh,How to approach a Machine Learning Problem with Python: YouTube Like Count Prediction
+2,11:10 - 11:40,AC1 Classroom P4701,,Video Streaming from LT-16
+2,11:10 - 11:40,AC1 Classroom P4704,,Development Sprint Part 1
+2,11:50 - 12:20,AC1 Lecture Hall LT-16,Holman Tai,AI learn to Drive: Introduction to Reinforcement Learning with Python
+2,11:50 - 12:20,AC1 Classroom P4701,,Video Streaming from LT-16
+2,11:50 - 12:20,AC1 Classroom P4704,,Development Sprint Part 2
+2,12:20 - 13:50,Expo Area,,Lunch Networking
+2,13:50 - 13:55,AC1 Lecture Hall LT-16,,Organiser Announcement
+2,14:00 - 14:30,AC1 Lecture Hall LT-16,Benny Huang,Machine Learning on Energy Consumption Prediction
+2,14:00 - 14:30,AC1 Classroom P4701,Patrick Tsoi,Micropython
+2,14:00 - 14:30,AC1 Classroom P4704,,Development Sprint Part 3
+2,14:40 - 15:10,AC1 Lecture Hall LT-16,Kirill Pavlov,Boosting command line data manipulation with Python and AWK
+2,14:40 - 15:10,AC1 Classroom P4701,,
+2,14:40 - 15:10,AC1 Classroom P4704,,Development Sprint Part 4
+2,15:10 - 15:30,Expo Area,,Refreshment
+2,15:30 - 16:00,AC1 Lecture Hall LT-16,Matt O'Connor,Recurrent Neural Networks in Python: Keras and TensorFlow for Time Series Analysis Part 1
+2,15:30 - 16:00,AC1 Classroom P4701,Payton Chan,Ticketing x Chatbot Part 1
+2,15:30 - 16:00,AC1 Classroom P4704,,Development Sprint Part 5
+2,16:00 - 16:30,AC1 Lecture Hall LT-16,Matt O'Connor,Recurrent Neural Networks in Python: Keras and TensorFlow for Time Series Analysis Part 2
+2,16:00 - 16:30,AC1 Classroom P4701,Payton Chan,Ticketing x Chatbot Part 2
+2,16:00 - 16:30,AC1 Classroom P4704,,Development Sprint Part 6
