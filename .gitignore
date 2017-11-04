@@ -11,3 +11,5 @@
 2017-10-22-codeconf/presentation/cmd-awk-2017-kirill-pavlov.toc
 2017-10-22-codeconf/presentation/cmd-awk-2017-kirill-pavlov.vrb
 2017-10-22-codeconf/presentation/_minted-cmd-awk-2017-kirill-pavlov/
+*.sqlite
+*.pyc
