@@ -5,6 +5,10 @@ ENV=$(CURDIR)/.env
 help:
 	@egrep "^# target:" [Mm]akefile
 
+.PHONY: clean
+clean:
+	@find . -name \*.py[co] -delete
+
 .PHONY: env
 # target: env - Setup Python environment
 env:
