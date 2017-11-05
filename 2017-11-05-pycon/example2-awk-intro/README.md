@@ -14,10 +14,13 @@ There are 15 unique speakers.
 cut -d, -f5 pycon-schedule.csv | tail -n+2 | awk '{for(i=1; i<=NF; i++) w[$i]++}END{for(i in w) print w[i], i}' | sort -r | head
 ```
 
+Python! (Who could have guessed?)
+
 3. Filter unique talks (one talk at a time).
 
-Not all of the functions implemented, however, there are workarounds.
-It is possible to combine two keys. For day 1 use timeslot, for day 2 use timeslot with substituted character
+Not all of the functions implemented, however, there are workarounds. For example, there is no support for composite group key.
+
+It is possible to combine two keys in a tricky way. For day 1 use timeslot, for day 2 use timeslot with substituted character
 
 ```bash
 cat pycon-schedule.tsv \
