@@ -1,0 +1,1082 @@
+% Author: Kirill Pavlov kirill.pavlov@phystech.edu 
+% Under BSD license
+% THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+% IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+% WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+%
+\documentclass[unicode, notheorems, hyperref={colorlink,urlcolor=blue,unicode}]{beamer}
+
+% If you have more than three sections or more than three subsections in at least one section,
+% you might want to use the [compress] switch. In this case, only the current (sub-) section
+% is displayed in the header and not the full overview.
+\mode<presentation>
+{
+  \usetheme[numbers, totalnumbers, compress, mylogo]{Statmod}
+  \setbeamercovered{transparent}
+}
+
+\pgfdeclareimage[height=2em,interpolate=true]{statmodlogotext}{statmod/mylogo}
+%\usepackage{pscyr}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsthm}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+\usepackage{color}
+% \usepackage{times}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{url}
+%\usepackage{verbatim}
+\usetikzlibrary{%
+    decorations%
+  ,decorations.fractals%
+  ,decorations.pathmorphing%
+  ,decorations.pathreplacing
+  ,circuits%
+  ,circuits.ee.IEC%
+  ,shadows%
+  ,lindenmayersystems%
+  ,shapes%
+  ,backgrounds%
+  ,mindmap%
+  ,arrows%
+  ,shapes%
+  ,backgrounds%
+  ,spy%
+}
+\usepackage{electComp}
+
+\usepackage{textcomp} % euro sign
+\usepackage[official]{eurosym}
+
+% beamer themes
+\newtheorem{theorem}{Теорема}
+\newtheorem{example}{Пример}
+\newtheorem{definition}{Определение}
+
+% теория вероятностей
+\newcommand{\erf}{\myop{erf}}
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\Var}{\mathsf{D}}
+\newcommand\Normal{\mathcal{N}}
+\newcommand{\cond}{\mspace{3mu}{|}\mspace{3mu}}
+
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % вектор жирным
+\newcommand{\T}{^{\text{\tiny\sffamily\upshape\mdseries T}}} % транспонирование
+
+\let\eps\varepsilon
+\def\RR{\mathbb R}
+\def\NN{\mathbb N}
+\def\ZZ{\mathbb Z}
+\def\LL{\mathbb L}
+\def\YY{\mathbb Y}
+\def\II{\mathbb I}
+\def\ra{\rightarrow}
+\def\Ra{\Rightarrow}
+\def\ge{\geqslant}
+\def\le{\leqslant}
+
+\def\Tikz{\textrm{Ti$k$Z} }
+\def\Google{\textcolor{blue}{G}\textcolor{red}{o}\textcolor{yellow}{o}\textcolor{blue}{g}\textcolor{green}{l}\textcolor{red}{e} }
+
+
+\title[\Tikz]{Библиотека векторной графики \Tikz}
+\author[Кирилл Павлов (kirill.pavlov@phystech.edu)]{Кирилл Павлов}
+\institute[МФТИ]{Московский физико-технический институт}
+
+\date{\today}
+
+\pgfdeclarelindenmayersystem{Koch curve}{
+	\rule{F -> F-F++F-F}
+}
+	
+\pgfdeclarelindenmayersystem{Hilbert curve}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{A -> +BX-AXA-XB+}
+\rule{B -> -AX+BXB+XA-}
+}
+
+% http://evelands.net/evan/lsystem02.php примеры фракталов
+\pgfdeclarelindenmayersystem{Gosper curve}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{X -> X+YF++YF-FX--FXFX-YF+}
+\rule{Y -> -FX+YFYF++YF+FX--FX-Y}
+}
+
+\pgfdeclarelindenmayersystem{Dragon curve}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{X -> X+YF}
+\rule{Y -> FX-Y}
+}
+
+\pgfdeclarelindenmayersystem{Square Sierpinski}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{X -> XF-F+F-XF+F+XF-F+F-X}
+}
+
+\pgfdeclarelindenmayersystem{Tetra Dragon}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{F -> F+F-F}
+}
+
+\pgfdeclarelindenmayersystem{Sierpinski triangle}{
+\symbol{X}{\pgflsystemdrawforward}
+\symbol{Y}{\pgflsystemdrawforward}
+\rule{X -> Y-X-Y}
+\rule{Y -> X+Y+X}
+}
+
+\pgfdeclarelindenmayersystem{Islands and Lakes}{
+\symbol{f}{\pgflsystemdrawforward}
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{F -> F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF}
+\rule{f -> ffffff}
+}
+
+\pgfdeclarelindenmayersystem{Triangle Koch}{
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{F -> F+F-F-F+F}
+}
+
+\pgfdeclarelindenmayersystem{Quadratic Koch}{
+\symbol{+}{\pgflsystemturnright} % Explicitly define + and - symbols.
+\symbol{-}{\pgflsystemturnleft}
+\rule{F -> F-FF+FF+F+F-F-FF+F+F-F-FF-FF+F}
+}
+ 
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+\frame{\titlepage} 
+\frame{\frametitle{Содержание}\tableofcontents} 
+
+
+\section{История создания, обзор возможностей}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Определения}
+\begin{definition}
+\Tikz/PGF --- Язык описания векторной графики на основе алгебраических и геометрических структур.
+\end{definition}
+
+\begin{block}{}
+PGF (Portable Graphics Format) --- низкоуровневый язык.
+\end{block}
+
+\begin{block}{}
+\Tikz (TikZ ist kein Zeichenprogramm = TikZ is not a drawing program) -- надстройка над PGF. 
+\end{block}
+\end{frame}
+
+\begin{frame}{Зачем нужет \Tikz?}
+\begin{itemize}
+\item Создание и генерация векторных изображений, 3D графики, анимации
+\item Вставка графики в pdf (.dvi, .ps), интерпретируется $\LaTeX$-ом. Можно вставлять векторную и растровую графику вместе
+\end{itemize}
+\textcolor{blue}{Note:} не нужно использовать \Tikz для вставки графиков.
+\end{frame}
+
+\begin{frame}{Автор: Prof. Dr. Till Tantau (1975 --)}
+
+\begin{columns}
+	\column{.4\textwidth}
+		\includegraphics[scale=0.5]{pictures/tantau}
+    \column{.6\textwidth}
+    	{\footnotesize 
+    	\begin{itemize}
+    		\item[1992] One of the national winner in the German computer science competition
+    		\item[1993] Silver medaillist at the internation olympiade of informatics in Mendoza, Argentina
+    		\item[1993] Stipend by the Studienstiftung des Deutschen Volkes
+    		\item[1994] Dr. Habbena award for an outstanding abitur
+    		\item[1999] Erwin-Stephan-Award of the TU Berlin
+    		\item[2002] Best student paper award at MFCS 2002
+    		\item[2003] Dissertation thesis is nominated for the GI-disseration awards
+    		\item[2007] Teaching award of the students of the faculty of technology and natural sciences
+    	\end{itemize}
+    	}
+\end{columns}
+
+
+\url{http://www.tcs.uni-luebeck.de/en/mitarbeiter/tantau/}
+\end{frame}
+
+\begin{frame}[fragile]{Getting started}
+Для начала нужно подключить окружение \alert{$\textrm{$\backslash$usepackage\{tikz\}}$} и необходимые библиотеки \alert{$\textrm{$\backslash$usetikzlibrary\{\}}$}.
+\begin{block}{}
+\begin{verbatim}
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{
+    arrows
+    ,shapes
+    ,trees
+    ...
+    } 
+\begin{document}
+ ...
+\end{document}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Окружение команд}
+Используйте \textcolor{blue}{\textrm{$\backslash$tikz}} для однострочных команд
+
+\begin{columns}
+	\column{.33\textwidth}
+		\tikz \fill[orange] (0,0) circle (1ex); 
+    \column{.67\textwidth}
+    	\begin{exampleblock}{}
+    	{\small 
+			\begin{verbatim}
+\tikz \fill[orange] (0,0) circle (1ex); 
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+\vspace{6pt}
+Используйте \textcolor{blue}{\textrm{$\backslash$begin\{tikzpicture\}} \dots \textrm{$\backslash$end\{tikzpicture\}}} для больших изображений
+\begin{columns}
+	\column{.33\textwidth}
+		\begin{tikzpicture}
+			\draw[style=dashed] (2,.5) circle (0.5);
+			\draw[fill=green!50] (1,1)
+			ellipse (.5 and 1);
+			\draw[fill=blue] (0,0) rectangle (1,1);
+			\draw[style=thick]
+			(3,.5) -- +(30:1) arc(30:80:1) -- cycle;
+		\end{tikzpicture}
+    \column{.67\textwidth}
+    	\begin{exampleblock}{}
+    	{\small 
+			\begin{verbatim}
+\begin{tikzpicture}
+	\draw[style=dashed] (2,.5) circle (0.5);
+	\draw[fill=green!50] (1,1)
+	ellipse (.5 and 1);
+	\draw[fill=blue] (0,0) rectangle (1,1);
+	\draw[style=thick]
+	(3,.5) -- +(30:1) arc(30:80:1) -- cycle;
+\end{tikzpicture}
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Примитивы \Tikz}
+\begin{itemize}
+\item \alert{node}: \tikz \node at ( 0,0) [circle,draw] {};
+\begin{exampleblock}{}
+\begin{verbatim}
+\tikz \node at ( 0,0) [circle,draw] {};
+\end{verbatim}
+\end{exampleblock}
+
+\item \alert{path}: \tikz \draw (0pt,0pt) -- (20pt,6pt);
+\begin{exampleblock}{}
+\begin{verbatim}
+\tikz \draw (0pt,0pt) -- (20pt,6pt);
+\end{verbatim}
+\end{exampleblock}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Paths}
+\begin{itemize}
+\item Базовые элементы, являются последовательностью прямых или изогнутых линий
+\item Могут быть нарисованы (\textcolor{blue}{drawn}), заполнены (\textcolor{blue}{filled}), перекрыты другими путями (\textcolor{blue}{clipping})
+\end{itemize}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\tikz \path[draw, line width=2pt] (0, 0)--(1, 1)--(2, 0)--cycle;
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\path[draw, line width=2pt] (0, 0)--(1, 1)--(2, 0)--cycle;
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+\vspace{6pt}
+\begin{columns}
+	\column{.2\textwidth}
+		\tikz \path[fill=blue!20] (0, 0) -- (1, 1) -- (2, 0) -- cycle;
+    \column{.8\textwidth}
+		\begin{exampleblock}{}
+    	{\scriptsize  
+    		\begin{verbatim}
+\path[fill=blue!20] (0, 0) -- (1, 1) -- (2, 0) -- cycle;
+			\end{verbatim}
+		}		
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\begin{tikzpicture}
+			\path[clip, draw] (0, 0) -- (1, 1) -- (2, 0) -- cycle;
+			\path[fill=blue!50] (1, 1) circle (1);
+		\end{tikzpicture}
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize 
+    		\begin{verbatim}
+\begin{tikzpicture}
+\path[clip, draw] (0, 0) -- (1, 1) -- (2, 0) -- cycle;
+\path[fill=blue!50] (1, 1) circle (1);
+\end{tikzpicture}
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Nodes}
+\begin{itemize}
+\item Базовые элементы, могут быть добалены к путям
+\item Узлам можно давать имена и обращаться к ним в дальнейшем
+\end{itemize}
+\begin{columns}
+	\column{.4\textwidth}
+		\begin{tikzpicture}
+			[first/.style={ellipse,draw=blue!50,fill=blue!20,thick},
+			second/.style={rectangle,draw=black!50,fill=black!20,thick}]
+			\node[first] (morning) {Утром деньги};
+			\node[second] (evening) [below of=morning] {Вечером стулья};
+			\draw [->] (morning) to [out=0,in=0] (evening);
+			\draw [->] (evening) to [out=180,in=180]  (morning);
+		\end{tikzpicture}
+    \column{.6\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize 
+    		\begin{verbatim}
+\node[first] (morning) {Утром деньги};
+\node[second] (evening) [below of=morning]
+    {Вечером стулья};
+\draw [->] (morning) to [out=0,in=0]
+    (evening);
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.45\textwidth}
+\begin{tikzpicture}
+\tikzstyle{every node}=[draw,shape=rectangle,rounded corners];
+\node (BU) at (2.2*60:1.8) {\tiny \shortstack{Business\\ Understanding}};
+\node (DU) at (0.8*60:1.8) {\tiny \shortstack{Data\\ Understanding}};
+\node (DP) at (0*60:1.8) {\tiny \shortstack{Data\\ Preparation}};
+\node (M) at (5*60:1.8) {\tiny Modeling};
+\node (E) at (4*60:1.8) {\tiny Evaluation};
+\node (D) at (3*60:1.8) {\tiny Deployment};
+\draw[->] (BU) -- (DU);
+\draw[->] (DU) -- (BU);
+\draw[->] (DU) -- (DP);
+\draw[->] (DP) -- (M);
+\draw[->] (M) -- (DP);
+\draw[->] (M) -- (E);
+\draw[->] (E) -- (D);
+\draw[->] (E) -- (BU);
+\end{tikzpicture}
+    \column{.55\textwidth}
+    	\begin{block}{}
+    	{\scriptsize
+    	\href{http://www.machinelearning.ru/wiki/index.php?title=CRISP-DM}{CRISP-DM} --- методология ведения проектов интеллектуального анализа данных
+		}
+		\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Shading}
+\begin{columns}
+	\column{.2\textwidth}
+		\tikz \shade[left color=red, draw] (1,1)--(2,2)--(3,1)--cycle;
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\tikz \shade[left color=red, draw]
+    (1,1)--(2,2)--(3,1)--cycle;
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\tikz \shade[top color=red, bottom color=green] (0,0) rectangle (2,1);
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\tikz \shade[top color=red,
+    bottom color=green] (0,0) rectangle (2,1);
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\tikz \shade[shading=ball, ball color=blue] (0,0) ellipse (1 and 0.5);
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\tikz \shade[shading=ball,
+    ball color=blue] (0,0) ellipse (1 and 0.5);
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\begin{tikzpicture}
+			\shade[shading=ball, ball color=red] (0,0) circle (.3);
+			\shade[shading=ball, ball color=yellow] (.7,0) circle (.3);
+			\shade[shading=ball, ball color=green] (1.4,0) circle (.3);
+		\end{tikzpicture}
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\begin{tikzpicture}
+\shade[shading=ball, ball color=red] (0,0) circle (.3);
+\shade[shading=ball, ball color=yellow] (.7,0) circle (.3);
+\shade[shading=ball, ball color=green] (1.4,0) circle (.3);
+\end{tikzpicture}
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.2\textwidth}
+		\begin{center}
+			\tikz \shade[left color=gray,right color=green, draw=green!50!black] (4,0)-- +(30:1cm) arc (30:60:1cm) -- cycle;
+			%\tikz \draw[fill=gray!50] (4,0)-- +(30:1cm) arc (30:60:1cm) -- cycle;
+		\end{center}
+    \column{.8\textwidth}
+    	\begin{exampleblock}{}
+    	{\scriptsize
+    		\begin{verbatim}
+\tikz \shade[left color=gray,right color=green,
+    draw=green!50!black] (4,0)-- +(30:1cm)
+    arc (30:60:1cm) -- cycle;
+			\end{verbatim}
+		}
+		\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Изогнутые линии}
+\begin{itemize}
+\item Специфицируются несколько контрольных точек между точками пути
+\item Кривая строится из начальной точки пути в направлении контрольной, затем изменяет направление в сторону второй контрольной и входит в конечную точку пути (кубическая интерполяция Безье).  
+
+\begin{columns}
+	\column{.3\textwidth}
+\begin{tikzpicture}
+\draw[line width=2pt] (0, 0) .. controls(1,1) .. (2.5, 0);
+\fill[red] (0,0) circle (0.1);
+\fill[red] (1,1) circle (0.1);
+\fill[red] (2.5,0) circle (0.1);
+\end{tikzpicture}
+    \column{.7\textwidth}
+	\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\tiz \draw[line width=2pt] (0, 0) .. 
+    controls(1,1) .. (2.5, 0);
+\end{verbatim}
+}
+\end{exampleblock}
+\end{columns}
+
+\begin{columns}
+	\column{.3\textwidth}
+\begin{tikzpicture}
+\draw [line width=2pt] (-1,0) .. controls (-1,0.555) and (-0.555,1) .. (0,1) .. controls (0.555,1) and (1,0.555) .. (1,0);
+\fill[red] (-1,0) circle (0.1);
+\fill[red] (-1,0.555) circle (0.05);
+\fill[red] (-0.555, 1) circle (0.05);
+\fill[red] (1,0.555) circle (0.05);
+\fill[red] (0.555, 1) circle (0.05);
+\fill[red] (1,0) circle (0.1);
+\fill[red] (0,1) circle (0.1);
+\end{tikzpicture}
+    \column{.7\textwidth}
+	\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\tikz \draw [line width=2pt] (-1,0) .. controls 
+    (-1,0.555) and (-0.555,1) .. (0,1) .. 
+    controls (0.555,1) and (1,0.555) .. (1,0);
+\end{verbatim}
+}
+\end{exampleblock}
+\end{columns}
+
+
+\item Можно так же указать направление кривой в начальной и конечной точках.
+\end{itemize}
+\begin{columns}
+	\column{.2\textwidth}
+		\begin{tikzpicture}
+			\draw[line width=2pt] (0,0) to [out=90, in=180] (1,1)
+			to [out=-90, in=-90] (2,1);	
+			\fill[red] (0,0) circle (0.1);
+			\fill[red] (1,1) circle (0.1);
+			\fill[red] (2,1) circle (0.1);
+		\end{tikzpicture}
+    \column{.8\textwidth}
+\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\tikz \draw[line width=2pt] (0,0) to [out=90, in=180]
+    (1,1) to [out=-90, in=-90] (2,1);
+\end{verbatim}
+}
+\end{exampleblock}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Clipping and Scope}
+\begin{itemize}
+\item Используйте команду \alert{clip} для скрепки изображений. Рисоваться будут только области внутри них
+\item Окружение \alert{scope} нужно чтоб изображения не выходили за границу области
+\end{itemize}
+\def\firstcircle{(0,0) circle (2cm)}
+\def\secondcircle{(60:2cm) circle (2cm)}
+\def\thirdcircle{(0:2cm) circle (2cm)}
+
+
+
+\begin{columns}
+	\column{.6\textwidth}
+\begin{tikzpicture}
+% The last trick is to cheat and use transparency
+\begin{scope}[fill opacity=0.5]
+    \fill[red] \firstcircle;
+    \fill[green] \secondcircle;
+    \fill[blue] \thirdcircle;
+\end{scope}
+
+\begin{scope}
+    \draw \firstcircle node [right=-0.8cm, below=0.4cm] {Intelligence};
+    \draw \secondcircle node [below=-1cm] {Social Ineptitude};
+    \draw \thirdcircle node [right=0.8cm, below=0.4cm]{Obsession};
+    \node [right=-0.2cm, below=-1.5cm]{Dweeb};
+    \node [right=2.2cm, below=-1.5cm]{Dork};
+    \node [right=1cm, below=0.4cm]{Geek};
+    \node [right=1cm, below=-0.7cm]{Nerd};
+\end{scope}
+\end{tikzpicture}
+    \column{.4\textwidth}
+\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\begin{scope}
+\clip \firstcircle;
+\clip \secondcircle;
+\clip \thirdcircle
+\fill[color=rgb]; % Nerd
+\end{scope}
+\end{verbatim}
+}
+\end{exampleblock}
+\end{columns}
+
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Циклы}
+\begin{tikzpicture}
+\draw[->] (-5.5,0) -- (5.5,0) node [below] {$\mathbb{R}$};
+\foreach \x in {-5,...,5}
+\draw (\x, 0.1) -- (\x, -0.1) node [below] {\x};
+\end{tikzpicture}
+
+\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\draw[->] (-5.5,0) -- (5.5,0) node [below] {$\mathbb{R}$};
+\foreach \x in {-5,...,5}
+\draw (\x, 0.1) -- (\x, -0.1) node [below] {\x};
+\end{verbatim}
+}
+\end{exampleblock}
+
+\begin{tikzpicture}
+\foreach \x in {1,3,...,10}
+\shade[ball color=red!\x 0!green] (\x,0) circle (3mm);
+\end{tikzpicture}
+
+\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\foreach \x in {1,3,...,10}
+\shade[ball color=red!\x 0!green] (\x,0) circle (3mm);
+\end{verbatim}
+}
+\end{exampleblock}
+
+\begin{tikzpicture}
+\foreach \x in {9,...,1}
+\draw[fill=blue!\x0] (-0.1*\x - 1, -0.1*\x )
+rectangle (0.1*\x + 1, 0.1*\x );
+\end{tikzpicture}
+
+\begin{exampleblock}{}
+{\scriptsize
+\begin{verbatim}
+\foreach \x in {9,...,1}
+\draw[fill=blue!\x0] (-0.1*\x - 1, -0.1*\x )
+rectangle (0.1*\x + 1, 0.1*\x );
+\end{verbatim}
+}
+\end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]{Ссылки вне текущего изображения}
+\begin{itemize}
+\item Добавьте в глобальные опции
+\begin{exampleblock}{}
+\begin{verbatim}
+\tikzstyle{every picture}+=[remember picture]
+\end{verbatim}
+\end{exampleblock}
+\item Добавьте опцию overlay всем \tikz [baseline,inner sep=0] \node[anchor=base](n1) {paths};, содержащим nodes вне текущего изображения
+\item Запустите pdflatex дважды.
+
+\vspace{15pt}
+
+\item Слово "
+\tikz [baseline,inner sep=0] \node[anchor=base](n2) {paths};" 
+сверху на самом деле node:
+\begin{exampleblock}{}
+\begin{verbatim}
+...всем \tikz[baseline,inner sep=0] \node[anchor=base] 
+(n1) {paths};, содержащим ...
+\end{verbatim}
+\end{exampleblock}
+
+\item Отрисовка стрелки: 
+\tikz[overlay]\draw[thick,green,->] (n2) to [out=40, in=-90] (n1);	
+
+\begin{exampleblock}{}
+\begin{verbatim}
+\tikz[overlay]\draw[thick,green,->] (n2) 
+    to [out=40, in=-90] (n1);
+\end{verbatim}
+\end{exampleblock}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Вставка в beamer}
+\tikzstyle{na} = [baseline=-.5ex]
+\begin{center}
+Экспонентный класс распределений
+\end{center}
+
+\begin{equation}\notag
+p(\vec{y} \cond \vec{\theta}) = \exp \left(
+	\tikz[baseline]{
+		\node[fill=blue!20,anchor=base] (t1)
+		{$ \vec{T}(\vec{y})\T $};
+	}
+	\tikz[baseline]{
+		\node[fill=red!20,anchor=base] (t2)
+		{$ \vec{\eta}(\vec{\theta}) $};
+	} - 
+	\tikz[baseline]{
+		\node[fill=green!20, anchor=base] (t3)
+		{$ b(\vec{\theta}) $};
+	} + 
+	\tikz[baseline]{
+		\node[fill=green!20, anchor=base] (t4)
+		{$ c(\vec{y}) $};
+	}	
+	\right)
+\end{equation}
+
+\begin{itemize}[<+-| alert@+>]
+    \item Достаточная статистика 
+        \tikz[na]\node [coordinate] (n1) {};
+    \item Предиктор 
+        \tikz[na]\node [coordinate] (n2) {};
+    \item Некоторые функции
+        \tikz[na]\node [coordinate] (n3) {};\\[1cm]
+\end{itemize}
+
+\begin{tikzpicture}[overlay]
+        \path[->]<1-> (n1.north east) edge [out=90, in=-90] (t1);
+        \path[->]<2-> (n2) edge [out=0, in=-90] (t2);
+        \path[->]<3-> (n3) edge [out=0, in=-90] (t3);
+        \path[->]<3-> (n3) edge [out=0, in=-90] (t4);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Перед запуском}
+\begin{enumerate}
+\item Поставьте последнюю версию \Tikz \url{http://tex.stackexchange.com/questions/2044/how-to-install-a-current-version-of-tikz}. 
+\item Скачать (если требуются) необходимые пакеты (tikzlibrary) и положить их в папку с компилируемым .tex файлом. \url{http://dante.ctan.org/get/graphics/pgf/base/tex/generic/pgf/libraries/}
+\item \Google в помощь
+\end{enumerate}
+\end{frame}
+
+\section{Сравнение с альтернативными подходами}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Альтернативные подходы}
+\begin{enumerate}
+\item Стандартный модуль \LaTeX \{\textbf{picture}\} 
+\item Пакет \textbf{pstricks} \url{http://www.tug.org/PSTricks/main.cgi/}
+\item Пакет \textbf{xypic} \url{http://www.tug.org/applications/Xy-pic/}
+\item Пакет \textbf{dratex}
+\item Программа \textbf{metapost} \url{http://www.tug.org/metapost.html} \url{http://ru.wikipedia.org/wiki/MetaPost}
+\item Програма \textbf{xfig} \url{http://www.xfig.org/}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Стандартный модуль \LaTeX \{\textbf{picture}\}}
+Позволяет создавать простые графики, но не многим больше. Используется, в основном, для вставки графических файлов (\textbackslash includegraphics\{\}) \url{http://www.math.uiuc.edu/~hildebr/tex/packages.html}
+\end{block}
+
+\begin{block}{Пакет \textbf{dratex}}
+Достаточно мал для создания графики. Его может не хватить.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Пакет \textbf{pstricks}}
+Достаточно мощный для создания графики (любых мыслимых типов), но не портируемый, не работает с pdftex и чем либо, что не создает PostScript код. По сравнению с pgf имеет больше дополнений (пакетов). Для \textbf{pstricks} существует много пакетов для конкретных целей 
+
+Стоит заметить, что \textbf{pstricks} может много того, что невозможно для pdf. В частности, он может получить доступ к языку PostScript, что позволит такие вещи, как inline function plotting (plot(x,y)).
+
+\href{http://tex.stackexchange.com/questions/19669/are-there-examples-written-in-pstricks-and-they-cannot-be-done-using-tikz}{Рисунки, которые нельзя сделать в \Tikz, но можно в \textbf{pstricks}}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\begin{block}{Пакет \textbf{xypic}}
+Старый пакет сложный для понимания.
+\end{block}
+
+\begin{block}{Программа The \textbf{metapost}}
+Серьезная альтернатива pgf. Однако, это внешняя программа. К её недостаткам можно отнести долгую компиляцию и проблемы с пометкой (label) картинок.
+\end{block}
+
+\begin{block}{Програма \textbf{xfig}}
+Альтернатива Ti$k$Z для пользователей, которые не любят программировать. \url{http://www.xfig.org/}
+\end{block}
+\end{frame}
+
+
+\section{Библиотеки Ti$k$Z}
+\frame{\tableofcontents[currentsection]}
+
+
+
+\begin{frame}[fragile]{Mindmap}
+\begin{columns}
+	\column{.45\textwidth}
+\begin{tikzpicture}
+[small mindmap, text=white]
+\node [concept] {Root concept}
+[clockwise from=45]
+child { node[concept] (c1) {child}}
+child { node[concept] (c2) {child}}
+child { node[concept] (c3) {child}};
+\begin{pgfonlayer}{background}
+\draw [concept connection] (c1) edge (c2)
+edge (c3)
+(c2) edge (c3);
+\end{pgfonlayer}
+\end{tikzpicture}
+    \column{.55\textwidth}
+		\begin{exampleblock}{}
+    	{\scriptsize  
+    		\begin{verbatim}
+\begin{tikzpicture}
+[small mindmap, text=white]
+\node [concept] {Root concept}
+[clockwise from=45]
+child { node[concept] (c1) {child}}
+child { node[concept] (c2) {child}}
+child { node[concept] (c3) {child}};
+\begin{pgfonlayer}{background}
+\draw [concept connection] (c1) edge (c2)
+edge (c3)
+(c2) edge (c3);
+\end{pgfonlayer}
+\end{tikzpicture}
+			\end{verbatim}
+		}		
+		\end{exampleblock}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Mindmap}
+\begin{center}
+\includegraphics[scale=0.5]{pictures/mindmap}
+\end{center}
+\end{frame}
+
+\begin{frame}{L-systems (Системы Линденмайера)}
+\begin{center}
+(картинки из презентации Алены Фаворской)
+\end{center}
+\url{http://evelands.net/evan/lsystem02.php}
+\end{frame}
+
+\begin{frame}[fragile]{Koch curve}
+
+\includegraphics[scale=0.6]{pictures/fractals/koch}
+
+\begin{columns}
+	\column{.2\textwidth}
+\tikz \draw [scale=5/(3^1)][l-system={Koch curve, angle=60, axiom=F++F++F, order=1}] lindenmayer system;
+\tikz \draw [scale=5/(3^2)][l-system={Koch curve, angle=60, axiom=F++F++F, order=2}] lindenmayer system;
+\tikz \draw [scale=5/(3^3)][l-system={Koch curve, angle=60, axiom=F++F++F, order=3}] lindenmayer system;
+\tikz \draw [scale=5/(3^4)][l-system={Koch curve, angle=60, axiom=F++F++F, order=4}] lindenmayer system;
+    \column{.8\textwidth}
+\begin{exampleblock}{}
+	{\scriptsize
+	\begin{verbatim}
+\tikz \draw [scale=5/(3^1)][l-system={Koch curve, angle=60,
+    axiom=F++F++F, order=1}] lindenmayer system;
+	\end{verbatim}
+	}
+\end{exampleblock}
+\end{columns}
+%\begin{tikzpicture}
+%\foreach \order in {1,2,3,4}
+%	n
+%	\draw [scale=10/(3^\order), xshift=-150*(\order-1)][l-system={Koch curve, angle=60, axiom=F++F++F, order=\order}] lindenmayer system;
+%\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]{Quadratic and Triangle Koch}
+\only<1>{
+\includegraphics[scale=1]{pictures/fractals/labirint}
+}
+
+\only<2>{
+\tikz\draw[scale=0.4][lindenmayer system={Quadratic Koch, axiom=F+F+F+F, order=2, angle=90}] lindenmayer system;
+\tikz\draw[scale=0.4, rotate=90][lindenmayer system={Triangle Koch, axiom=-F, order=4, angle=90}] lindenmayer system;
+}
+\end{frame}
+
+\begin{frame}{Islands and Lakes}
+\only<1>{
+\includegraphics[scale=1]{pictures/fractals/pacman}
+}
+\only<2>{
+\begin{center}
+\tikz\draw[scale=0.6][lindenmayer system={Islands and Lakes, axiom=F+F+F+F, order=2, angle=90}] lindenmayer system;
+\end{center}
+}
+\end{frame}
+
+\begin{frame}{Trees}
+\begin{columns}
+	\column{.75\textwidth}
+\includegraphics[scale=0.8]{pictures/fractals/trees}
+    \column{.25\textwidth}
+		\vspace{18pt}    
+    
+		% растение
+		\begin{tikzpicture}
+		\draw [green!50!black, rotate=90, scale=1.2]
+		[l-system={rule set={F -> FF-[-F+F]+[+F-F]}, axiom=F, order=4, step=2pt,
+		randomize step percent=25, angle=30, randomize angle percent=6}]
+		lindenmayer system;
+		\end{tikzpicture}
+		\vspace{8pt}
+		
+		{\tiny
+		n=4, $\delta=30^{\circ}$ \\ 
+		F \\
+		F $\rightarrow$ FF-[-F+F]+ [+F-F]
+		}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Spy library}
+\only<1>{
+\tikz \draw[scale=1/4][lindenmayer system={Dragon curve, axiom=FX, order=13, angle=90}] lindenmayer system;
+}
+\only<2>{
+\begin{tikzpicture}
+[spy using outlines={circle, magnification=4, size=2cm, connect spies}]
+
+%\draw[scale=10/(2^6)][lindenmayer system={Hilbert curve, axiom=A, order=6, angle=90}] lindenmayer system;
+\draw[scale=1/4][lindenmayer system={Dragon curve, axiom=FX, order=13, angle=90}] lindenmayer system;
+
+\spy [red] on (0,0) in node [left] at (-2,-0.5);
+\spy [blue, size=1cm] on (-2.8,3) in node [right] at (-1.8,3);
+\spy [magenta, magnification=8, rectangle] on (-3.5,1) in node [right] at (-0.5,2);
+\end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}{Circuit}
+\begin{tikzpicture}[line width=1pt]
+    \draw (0cm,0cm) -- (0.5cm,0cm);
+    \draw (0.5cm,0cm) -- (0.5cm,1cm) -- (1cm,1cm);
+    \draw (0.5cm,0cm) -- (0.5cm,-1cm) -| (1cm,-1cm);
+    \draw[decorate, decoration=resistor] (1cm,1cm) -- (2cm,1cm) ;
+    \draw[decorate, decoration=resistor] (1cm,-1cm) -- (2cm,-1cm);
+    \draw (2cm,1cm) -- (3cm,1cm);
+    \draw (2cm,-1cm) -- (3cm,-1cm);
+    \draw[decorate, decoration=resistor] (3cm,1cm) -- (4cm,1cm);
+    \draw[decorate, decoration=resistor] (3cm,-1cm) -- (4cm,-1cm);
+    \draw (4cm,1cm) -- (4.5cm,1cm) -- (4.5cm,0cm);
+    \draw (4cm,-1cm) -| (4.5cm,-1cm) -- (4.5cm,0cm);
+    \draw (4.5cm,0cm) -- (5cm,0cm);
+    \draw (2.5cm,1cm) -- (2.5cm,0.5cm);
+    \draw (2.5cm,-1cm) -- (2.5cm,-0.5cm);
+    \draw[decorate, decoration=resistor] (2.5cm,0.5cm) -- (2.5cm,-0.5cm);
+\end{tikzpicture}
+\end{frame}
+
+\section{Картинки}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+\begin{center}
+\only<1>{
+\newcommand{\phystechlogo}{
+\begin{tikzpicture}
+% photon
+\draw[thick,rounded corners=5pt] (-0.225, 0) -- (0.1,0) -- (0.5, 1.1) -- (0.9, -0.4) -- (1.05, -0.1) -- (4.2, -0.1);
+% Rocket
+\draw[fill=black] (4.3, -0.1) -- (4.2, 0.0) -- (4.4, 0) -- (4.45, -0.05) -- (4.75, -0.05) .. controls (4.825, -0.1) .. (4.75, -0.15) -- (4.45, -0.15) -- (4.4, -0.2) -- (4.2, -0.2) -- (4.3, -0.1); 
+\draw (2.55, 0.5) node {$\huge\textbf{\textrm{МФТИ}}$};
+% frame
+\draw[very thick] (-0.2, -0.05) -- (-0.2, -0.4) -- (4.8, -0.4) -- (4.8, -0.15);
+\draw[very thick] (-0.2, 0.05) -- (-0.2, 1.1) -- (4.8, 1.1) -- (4.8, -0.05);
+\end{tikzpicture}
+}
+
+\phystechlogo
+}
+
+\only<2>{
+\begin{tikzpicture}[ scale=1.0, show background rectangle]
+\path[draw,line width=2pt] (3, 3) -- (1.5, 7);
+\shade[shading=ball, ball color=blue] (2,4) circle (.15);
+\shade[shading=ball, ball color=blue] (1.5,4.5) circle (.15);
+\shade[shading=ball, ball color=blue] (1.8,5.2) circle (.15);
+\shade[shading=ball, ball color=blue] (1.7,5.7) circle (.15);
+
+\shade[shading=ball, ball color=red] (3,4.2) circle (.15);
+\shade[shading=ball, ball color=red] (2.8,5.2) circle (.15);
+\shade[shading=ball, ball color=red] (3,4.7) circle (.15);
+\shade[shading=ball, ball color=red] (2.6,4.8) circle (.15);
+
+\path[draw,line width=2pt] (5.2, 3) -- (6, 7);
+\shade[shading=ball, ball color=red] (4.8,4) circle (.15);
+\shade[shading=ball, ball color=red] (5.2,4.2) circle (.15);
+\shade[shading=ball, ball color=red] (5,4.5) circle (.15);
+\shade[shading=ball, ball color=red] (5.3,4.6) circle (.15);
+\shade[shading=ball, ball color=red] (4.8,5) circle (.15);
+
+\shade[shading=ball, ball color=blue] (6,4) circle (.15);
+\shade[shading=ball, ball color=blue] (5.7,4.3) circle (.15);
+\shade[shading=ball, ball color=blue] (6,4.6) circle (.15);
+\shade[shading=ball, ball color=blue] (5.8,4.8) circle (.15);
+
+\draw[->] (6.75, 6.3) -- (2, 5.85) node[pos=.5,sloped,below] {$?$};
+\draw[->] (6.75, 6.35) -- (6, 6.6) node[pos=.5,sloped,above] {$?$};
+\draw (6.9, 6.3) circle (.15);
+\end{tikzpicture}
+}
+\end{center}
+\end{frame}
+
+\section*{}
+\begin{frame}{Ссылки}
+\begin{enumerate}
+\item \url{http://www.texample.net/tikz/} --- примеры
+\item \url{http://mirror.ctan.org/graphics/pgf/base/doc/generic/pgf/pgfmanual.pdf} --- документация по \Tikz v.~2.10
+\item \url{http://www.ctan.org/pkg/pgf} --- страница пакета pgf
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz}
+\begin{enumerate}
+\item Что является базовыми элементами изображения в \Tikz?
+\only<2>{
+\alert{nodes} + \alert{paths}
+}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Quiz}
+\begin{enumerate}
+\item[2] Что выведет программа?
+\begin{exampleblock}{}
+\begin{verbatim}
+\begin{scope}[fill=orange]
+\fill[clip] (0,0) rectangle (10,10);
+\foreach \angle in {0,30,...,360}
+	\path[fill=red] (5,5) -- +(\angle:10) 
+	    arc(\angle:\angle+15:10) -- cycle;
+
+\node[anchor=base,inner sep=0] (image) at (4.55,2.2) 
+    {\includegraphics[scale=1.2]{pictures/tp}};
+\end{scope}
+\end{verbatim}
+\end{exampleblock}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\thispagestyle{empty}
+\begin{center}
+\begin{tikzpicture}
+\begin{scope}[fill=orange]
+\fill[clip] (0,0) rectangle (10,10);
+\foreach \angle in {0,30,...,360}
+	\path[fill=red] (5,5) -- +(\angle:10) arc(\angle:\angle+15:10) -- cycle;
+	
+\node[anchor=base,inner sep=0] (image) at (4.55,2.2) {\includegraphics[scale=1.2]{pictures/tp}};
+\end{scope}
+\node at (5,9) [white] {\Huge \textbf{Типичный физтех}};
+\node at (5,1.8) [white] {\Huge \textbf{\shortstack{знает, что выведет\\ программа}}};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Спасибо за внимание!}
+\begin{center}
+Если у Вас есть вопросы, то сейчас самое время их задать!
+\end{center}
+\end{frame}
+\end{document}

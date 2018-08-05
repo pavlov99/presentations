@@ -1,0 +1,217 @@
+% Electrical Circuits with pgf
+% Author: bumesh AAATTT cedt [.] iisc . ernet . in
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{electComp}[2008/03/12]
+
+\RequirePackage{tikz}
+\usepgflibrary{decorations.pathreplacing}
+
+
+\pgfdeclaredecoration{sqWave}{initial}
+{
+    \state{initial}[width=0.5cm]
+    {
+        \pgfpathlineto{\pgfpoint{0.25cm}{0cm}}
+        \pgfpathlineto{\pgfpoint{0.25cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0.25cm}}
+        \pgfpathlineto{\pgfpoint{0.5cm}{0}}
+    }
+    \state{final}
+    {
+        \pgfpathlineto{\pgfpointdecoratedpathlast}
+    }
+}
+
+
+\pgfdeclaredecoration{switch}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.25\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{0.25\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.75\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathcircle{\pgfpoint{0.75\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+    }
+    \state{final}
+    {
+        \pgfpathmoveto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{cell}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{-\pgfdecorationsegmentlength}}
+        \pgfpathcircle{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{-0.5\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{-0.5\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0.5\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{0.5\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+    }
+    \state{final}
+    {
+        \pgfpathmoveto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{capacitor}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.5\pgfdecoratedinputsegmentremainingdistance}{-\pgfdecorationsegmentlength}}
+        \pgfpathcircle{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{-1\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+    }
+    \state{final}
+    {
+        \pgfpathmoveto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{resistor}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.1\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.2\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.4\pgfdecoratedinputsegmentremainingdistance}{-\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.6\pgfdecoratedinputsegmentremainingdistance}{\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.8\pgfdecoratedinputsegmentremainingdistance}{-\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.9\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{1\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+    }
+    \state{final}
+        {
+        \pgfpathlineto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{diode}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.35\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.35\pgfdecoratedinputsegmentremainingdistance}{1.0\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.35\pgfdecoratedinputsegmentremainingdistance}{-1.0\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.35\pgfdecoratedinputsegmentremainingdistance}{1.0\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0.75\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{-0.75\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+            {0.05\pgfdecoratedinputsegmentremainingdistance}
+    }
+    \state{final}
+    {
+        \pgfpathlineto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{ground}{initial}
+{
+    \state{initial}[width=+\pgfdecoratedinputsegmentremainingdistance]
+    {
+        \pgfsetlinewidth{1pt}
+        \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{1.0\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{-1.0\pgfdecorationsegmentlength}}
+        \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}
+        \pgfpathlineto{\pgfpoint{0.65\pgfdecoratedinputsegmentremainingdistance}{1.0\pgfdecorationsegmentlength}}
+    }
+    \state{final}
+    {
+        \pgfpathlineto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\pgfdeclaredecoration{inductor}{initial}
+{
+    \state{initial}[switch if less than=%
+        1.5\pgfdecorationsegmentlength+%
+    \pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+    \pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude to last,
+        width=+\pgfdecorationsegmentlength]
+{
+    \pgfsetlinewidth{1pt}
+    \pgfpathcircle{\pgfpoint{0}{0}}{0.05\pgfdecoratedinputsegmentremainingdistance}
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{0    }{ 0.555}{1}}
+    {\pgfpoint@oncoil{0.445}{ 1    }{2}}
+    {\pgfpoint@oncoil{1    }{ 1    }{3}}
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{1.555}{ 1    }{4}}
+    {\pgfpoint@oncoil{2    }{ 0.555}{5}}
+    {\pgfpoint@oncoil{2    }{ 0    }{6}}
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{2    }{-0.555}{7}}
+    {\pgfpoint@oncoil{1.555}{-1    }{8}}
+    {\pgfpoint@oncoil{1    }{-1    }{9}}
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{0.445}{-1    }{10}}
+    {\pgfpoint@oncoil{0    }{-0.555}{11}}
+    {\pgfpoint@oncoil{0    }{ 0    }{12}}
+}
+    \state{last}[width=.5\pgfdecorationsegmentlength+%
+    \pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude+%
+    \pgfdecorationsegmentaspect\pgfdecorationsegmentamplitude,next state=final]
+{
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{0    }{ 0.555}{1}}
+    {\pgfpoint@oncoil{0.445}{ 1    }{2}}
+    {\pgfpoint@oncoil{1    }{ 1    }{3}}
+    \pgfpathcurveto
+    {\pgfpoint@oncoil{1.555}{ 1    }{4}}
+    {\pgfpoint@oncoil{2    }{ 0.555}{5}}
+    {\pgfpoint@oncoil{2    }{ 0    }{6}}
+    \pgfpathcircle{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0}}%
+        {0.05\pgfdecoratedinputsegmentremainingdistance}
+}
+    \state{final}
+    {
+        \pgfpathlineto{\pgfpointdecoratedpathlast}
+    }
+}
+
+\def\pgfpoint@oncoil#1#2#3{%
+    \pgf@x=#1\pgfdecorationsegmentamplitude%
+    \pgf@x=\pgfdecorationsegmentaspect\pgf@x%
+    \pgf@y=#2\pgfdecorationsegmentamplitude%
+    \pgf@xa=0.083333333333\pgfdecorationsegmentlength%
+    \advance\pgf@x by#3\pgf@xa%
+}

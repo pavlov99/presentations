@@ -1,0 +1,113 @@
+% pavlov99style copyleft
+\usepackage[cp1251]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb, amsmath}
+\usepackage[colorlinks, urlcolor=blue, unicode]{hyperref}  % unicode is necessary!
+\usepackage{cmap}               %  search in pdf document if using pdflatex (also includes russian search)
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{theorem}
+\usepackage{mathrsfs}
+\usepackage{moreverb}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+\usepackage[all]{xy} % for graph plotting
+
+
+% Параметры страницы
+\textheight=24cm
+\textwidth=16cm
+\oddsidemargin=0mm
+\topmargin=-1cm
+\parindent=24pt
+\tolerance=500
+\footnotesep=3ex
+\flushbottom
+\tolerance=3000
+\pagestyle{headings}
+\renewcommand{\baselinestretch}{1.4} %для печати с большим интервалом
+
+
+\let\eps\varepsilon
+\def\RR{\mathbb R}
+\def\NN{\mathbb N}
+\def\ZZ{\mathbb Z}
+\def\LL{\mathbb L}
+\def\YY{\mathbb Y}
+\def\II{\mathbb I}
+\def\ra{\rightarrow}
+\def\Ra{\Rightarrow}
+\def\ge{\geqslant}
+\def\le{\leqslant}
+
+\def\dEqual{\mathrel{\stackrel{\rm d}\sim}} % distribution equal
+\def\D#1#2{\frac{\partial}{\partial#2}#1}
+
+
+\@addtoreset{equation}{section}
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+
+% теория вероятностей
+\newcommand{\erf}{\myop{erf}}
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\Var}{\mathsf{D}}
+\newcommand\Normal{\mathcal{N}}
+\newcommand{\cond}{\mspace{3mu}{|}\mspace{3mu}}
+
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % вектор жирным
+\newcommand{\T}{^{\text{\tiny\sffamily\upshape\mdseries T}}} % транспонирование
+
+\newenvironment{proof}{\par\noindent{\bf Доказательство.}}{\hfill$\scriptstyle\blacksquare$}
+\newenvironment{consequence}{\par\noindent{\bf Следствие.}}
+
+
+% Рисование нейронных сетей и диаграмм
+\newenvironment{network}%
+    {\begin{xy}<0.9ex,0ex>:}%
+    {\end{xy}}
+\def\nnNode[#1](#2)#3{\POS(#2)*#3="#1"}
+\def\nnLink[#1,#2]#3{\POS"#1"\ar #3 "#2"}
+
+
+% Стили параграфов
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {3.5ex \@plus 1ex \@minus .2ex}%
+    {2.3ex \@plus.2ex}%
+    {\normalfont\Large\sffamily\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {3.25ex\@plus 1ex \@minus .2ex}%
+    {1.5ex \@plus .2ex}%
+    {\normalfont\large\sffamily\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+    {3.25ex\@plus 1ex \@minus .2ex}%
+    {1.5ex \@plus .2ex}%
+    {\normalfont\normalsize\sffamily\bfseries}}
+%===================
+
+% Окружения типа теорем
+\theorembodyfont{\rmfamily\slshape}
+\theoremstyle{plain}
+\newtheorem{Theorem}{Теорема}[section]
+\newenvironment{Proof}%
+    {\par\noindent{\bf Доказательство.\par\nopagebreak}}%
+    {\hfill$\scriptstyle\blacksquare$}
+\newtheorem{Corollary}{Следствие}[Theorem]
+\newtheorem{Lemma}{Лемма}[section]
+\newtheorem{Def}{Определение}[section]
+\newtheorem{State}{Утверждение}[section]
+\newtheorem{Hypothesis}{Гипотеза}[section]
+\theorembodyfont{\rmfamily}
+\newtheorem{Example}{Пример}[section]
+\newtheorem{Heuristic}{Эвристика}
+\newtheorem{Remark}{Замечание}[section]
+% Шаманские пляски с бубном, чтобы ставить точку после номера теоремы
+\gdef\th@plain{\normalfont
+    \def\@begintheorem##1##2{%
+        \item[\hskip\labelsep\theorem@headerfont ##1\ ##2.\;]}%
+    \def\@opargbegintheorem##1##2##3{%
+        \item[\hskip\labelsep\theorem@headerfont ##1\ ##2 (##3).\;]}%
+}
+
+
